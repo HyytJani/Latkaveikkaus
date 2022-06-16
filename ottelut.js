@@ -1,0 +1,6 @@
+
+
+
+
+function lisaa(){
+poista();}
