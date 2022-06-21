@@ -1,6 +1,8 @@
 
-    var mysql=require('mysql');
- // import mysql from 'mysql';
+    
+    
+    var mysql=require ('mysql');
+        //import mysql from '/mysql';
     var yhteys=mysql.createConnection({
         host:"localhost",
         user:"root",
@@ -8,7 +10,7 @@
         database:"latkaveikkaus"
 
     }   ); 
-    function poista(){    
+       
     yhteys.connect(function(err){
         if(err) throw err;
         console.log('toimii');
@@ -16,6 +18,6 @@
         yhteys.query(sql, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
-    });});}
+    });});
 
     
