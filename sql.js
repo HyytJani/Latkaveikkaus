@@ -11,7 +11,7 @@
 
     }   ); 
        
-    yhteys.connect(function(err){
+    var server=yhteys.createServer(function(reg,err){
         if(err) throw err;
         console.log('toimii');
         var sql = "delete from ottelut where joukkue1='saksa'"
@@ -19,5 +19,6 @@
             if (err) throw err;
             console.log("Result: " + result);
     });});
+    server.listen(3000);
 
     
