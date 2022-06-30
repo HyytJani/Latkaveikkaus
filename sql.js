@@ -1,11 +1,13 @@
 
     
-    const express=require("express")
-
+    const express=require("express");
+    const http = require("http");
     const  mysql=require ('mysql');
     const app= express()
     const yhteys=muodostaYhteys();
+    const bodyParser=require("body-parser")
     app.use(express.static("./public"))
+    app.use(bodyParser.urlencoded({extended:false}))
 
     function muodostaYhteys(){
     return mysql.createConnection({
@@ -16,19 +18,19 @@
 
    }   ); }
 
-   app.post("/lisaa",(req,res)=>{
-    console.log(res)
-    res.end();
-   })
-   app.get("/lisaa",(res,reg)=>{
-   muodostaYhteys.connect(function(err){
-    if (err)throw err;
-    console.log('ok');
-    var sql="INSERT INTO pelaaja(etunimi,sukunimi)VALUES('petteri','hyytiainen')";
-   yhteys.query(sql,function(reg,res){
+ 
+   app.post("/lisaa",(req,res,next)=>{
+   
+    const etuNimi=req.body.etunimi
+    const sukuNimi=req.body.sukunimi
+    console.log(etuNimi,sukuNimi);
+    muodostaYhteys().connect(function(err){
+        if (err)throw err;
+    var sql="INSERT INTO pelaaja(etunimi,sukunimi)VALUES(?,?)";
+    yhteys.query(sql,[etuNimi,sukuNimi],(req,res)=>{
     if(err)throw err;
-
-   });});});
+  
+   });});})
   
 
   app.use(express.json());
