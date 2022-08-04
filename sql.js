@@ -18,8 +18,18 @@
 
    }   ); }
 
+   muodostaYhteys().connect(function(err){
+    if (err)throw err;
+var sql="SELECT * FROM pelaaja";
+yhteys.query(sql,(err,results)=>{
+if(err)throw err;
+console.log(rows)});});
+
+
+
+
  
-   app.post("/lisaa",(req,res,next)=>{
+   app.post("/lisaa",(req,res)=>{
    
     const etuNimi=req.body.etunimi
     const sukuNimi=req.body.sukunimi
@@ -29,7 +39,8 @@
     var sql="INSERT INTO pelaaja(etunimi,sukunimi)VALUES(?,?)";
     yhteys.query(sql,[etuNimi,sukuNimi],(req,res)=>{
     if(err)throw err;
-  
+    
+       
    });});})
   
 
