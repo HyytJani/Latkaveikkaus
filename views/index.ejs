@@ -15,16 +15,17 @@
         <input  type="text" placeholder="Etunimi" name="etunimi"><br> 
         <input  type="text" placeholder="Sukunimi"name="sukunimi"> <br><button id="lisää" >Lisää</button></form>
 
-    <table>
+    <table  >
         <tr>             
             <th>ID</th>
              <th>Etunimi</th>
              <th>Sukunimi</th></tr>
              <tr>
-                <%data.forEach(taulukko =>{%>
-                <td><%=taulukko.pelaajaID%></td>
+                <%data.forEach(taulukko =>{%><form action="/poista" method='POST' >
+                <td ><%=taulukko.pelaajaID%></td>
                 <td><%= taulukko.etunimi %> </td>
-                <td><%=taulukko.sukunimi%></td></tr>
+                <td><%=taulukko.sukunimi%></td>
+                <td><button onclick="this.form.submit()" value="<%=taulukko.pelaajaID%>" name="deletebtn">poista</button></form></td></tr>
                 <%})%>
                 </table>
 </body>

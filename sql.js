@@ -30,6 +30,16 @@
              });
             
     })})
+    app.post("/poista",(req,res)=>{
+        var poistettava= req.body.deletebtn;
+        muodostaYhteys().connect(function(err){
+            if (err)throw err;
+        var sql="DELETE FROM pelaaja WHERE pelaajaID=(?)"        
+        yhteys.query(sql,[poistettava],(req,res)=>{
+        if(err)throw err;
+        console.log('ei hyvä');});});
+        res.redirect('/');
+    });
  
    app.post("/lisaa",(req,res)=>{
    
@@ -42,8 +52,10 @@
     if(err)throw err;
         ;
    });});
+   
    res.redirect('/')
 });
+
   
 
   app.use(express.json());
