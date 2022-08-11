@@ -6,10 +6,9 @@
     const app= express()
     const yhteys=muodostaYhteys();
     const bodyParser=require("body-parser")
-    app.use(express.static("./public"))
     app.use(bodyParser.urlencoded({extended:false}))
     app.set('view engine','ejs');
-
+    module.exports=require('./index.js')
 
     function muodostaYhteys(){
     return mysql.createConnection({
@@ -24,39 +23,32 @@
         if (err)throw err;
     sql="select * from pelaaja"
     yhteys.query(sql,(req,rows)=>{
-        if (err)throw err;   
-            
-               res.render('index.ejs',{data:rows});
+        if (err)throw err;              
+               res.render('./index.ejs',{data:rows});
              });
             
     })})
-    app.post("/poista",(req,res)=>{
-        var poistettava= req.body.deletebtn;
+    app.get('/syotapeli',(req,res)=>{
         muodostaYhteys().connect(function(err){
             if (err)throw err;
-        var sql="DELETE FROM pelaaja WHERE pelaajaID=(?)"        
-        yhteys.query(sql,[poistettava],(req,res)=>{
-        if(err)throw err;
-        console.log('ei hyvä');});});
-        res.redirect('/');
-    });
- 
-   app.post("/lisaa",(req,res)=>{
-   
-    const etuNimi=req.body.etunimi
-    const sukuNimi=req.body.sukunimi
-    muodostaYhteys().connect(function(err){
-        if (err)throw err;
-    var sql="INSERT INTO pelaaja(etunimi,sukunimi)VALUES(?,?)";
-    yhteys.query(sql,[etuNimi,sukuNimi],(req,res)=>{
-    if(err)throw err;
-        ;
-   });});
-   
-   res.redirect('/')
-});
+        sql="select * from ottelut"
+        yhteys.query(sql,(req,rows)=>{
+            if (err)throw err;   
+                res.render('syotapeli.ejs',{data:rows});
+                 });
+                
+        })})
+        app.post("/poista",(req,res)=>{
+            var poistettava= req.body.deletebtn;
+            muodostaYhteys().connect(function(err){
+                if (err)throw err;
+            var sql="DELETE FROM pelaaja WHERE pelaajaID=(?)"        
+            yhteys.query(sql,[poistettava],(req,res)=>{
+            if(err)throw err;
+            ;});});
+            res.redirect('/');
+        });
 
-  
 
   app.use(express.json());
   app.listen(8000)
