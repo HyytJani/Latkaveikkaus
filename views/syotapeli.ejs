@@ -7,13 +7,18 @@
     <title>Lätkäveikkaus</title>
     
 </head>
-<header><h1>LÄTKÄVEIKKAUS</h1></header>
+<header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
 <body>
     <h3>LISÄÄ PELIN TIEDOT</h3>
-    <form action="/syötäpeli" method="POST">
 
-        <input  type="text" placeholder="Kisan nimi" name="kisa"><br> 
-        <input  type="text" placeholder="ottelu"name="ottelu"> <br><button id="lisää" >Lisää</button></form>
+    <form action="/lisaakisa" method="POST">
+        <input  type="text" placeholder="Kisan nimi" name="kisa"> 
+        <button id="lisää" >Lisää</button></form>
+
+
+    <form action="/lisaaottelu" method="POST">
+        
+        <input  type="text" placeholder="ottelu"name="ottelu"><button id="lisää" >Lisää</button></form>
 
     <table  >
         <tr>             
@@ -21,11 +26,11 @@
              <th></th>
              <th>OTTELU</th></tr>
              <tr>
-                <%data.forEach(ottelut =>{%><form action="/poista" method='POST' >
+                <%data.forEach(ottelut =>{%><form action="/poistapeli" method='POST' >
                 <td ><%=ottelut.otteluID%></td>
                 <td><%=ottelut.ottelu %> </td>
                 
-                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="deletebtn">poista</button></form></td></tr>
+                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="poistapelibtn">poista</button></form></td></tr>
                 <%})%>
                 </table>
 </body>
