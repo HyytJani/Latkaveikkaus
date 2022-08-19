@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lätkäveikkaus</title>
+    
+</head>
+<header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
+<body>
+    <h3>Valitse kisa tai syötä uusi</h3>
+    <form action="/lisaakisa" method="POST">
+    
+        <input  type="text" placeholder="Kisan nimi"name="kisa"> <br><button id="lisaa" >Lisää</button></form><br>
+
+
+                <%data.forEach(kisa =>{%><form action="/siirry" method='POST' >
+                <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
+                <%})%>
+                
+<body>
+    
+</body>
+</html>

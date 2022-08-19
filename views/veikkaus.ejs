@@ -13,8 +13,8 @@
 
 
     <form action="/lisaaottelu" method="POST">
-        <label for="kisat">Lisää ja poista otteluita</label><br>        
-        <input id="input" type="text" placeholder="ottelu" name="ottelu" >  <button id="lisaa" >Lisää</button></form>
+        <label for="kisat">Syötä veikkauksesi</label><br>        
+        
 
     <table  >
         <tr> 
@@ -24,12 +24,12 @@
              <th>OTTELU</th></tr>
              <tr>
                 <%data.forEach(ottelut =>{%>
-                    <form action="/poistapeli" method='POST' >
+                    <form action="/veikkaa" method='POST' >
                     <td><%=ottelut.kisaID%></td>
                 <td ><%=ottelut.otteluID%></td>
                 <td><%=ottelut.ottelu %> </td>
-                
-                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="poistabtn">poista</button></form></td></tr>
+                <td><input type="text" name="veikkaus"></td>
+                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="veikkaabtn">veikkaa</button></form></td></tr>
                 <%})%>
                 </table>
 </body>
