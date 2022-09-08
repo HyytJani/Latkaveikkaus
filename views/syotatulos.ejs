@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lätkäveikkaus</title>
+    
+</head>
+<header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
+<body>
+   
+
+
+
+
+    <table  >
+        <tr> 
+                        
+            <th>NRO</th>
+             
+             <th>OTTELU</th>
+             
+             <th>TULOS</th></tr>
+             <tr>
+                <%data.forEach(ottelut =>{%>
+                    <form action="/paivitapeli" method='POST' >
+                   
+                <td ><%=ottelut.otteluID%></td>
+            <td ><b><%=ottelut.ottelu %></b> </td>
+           <td><input placeholder="<%=ottelut.tulos %>" name="tulos" value="" type="text" size="1">
+                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="paivitabtn">Päivitä</button></form></td>
+                
+                </tr>
+                <%})%>
+                </table>
+</body>
+
+</html>

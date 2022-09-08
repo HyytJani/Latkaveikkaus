@@ -14,14 +14,15 @@
 
     <form action="/lisaaottelu" method="POST">
         <label for="kisat">Lisää ja poista otteluita</label><br>        
-        <input id="input" type="text" placeholder="ottelu" name="ottelu" >  <button id="lisaa" >Lisää</button></form>
+        <input  id="input" type="text" placeholder="joukkue-joukkue" name="ottelu" >  <button id="lisaa" >Lisää</button></form>
 
     <table  >
         <tr> 
             <th>KisaID</th>            
-            <th>OTTELUNUMERO</th>
+            <th>OTTELUID</th>
              
-             <th>OTTELU</th></tr>
+             <th>OTTELU</th>
+            </tr>
              <tr>
                 <%data.forEach(ottelut =>{%>
                     <form action="/poistapeli" method='POST' >

@@ -9,29 +9,33 @@
 </head>
 <header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
 <body>
-   
-
-
-    <form action="/lisaaottelu" method="POST">
-        <label for="kisat">Syötä veikkauksesi</label><br>        
-        
-
+    
+        <h3>LISÄÄ PELAAJAN TIEDOT</h3>
+        <form action="/veikkaa" method='POST' >    
+            <input  type="text" placeholder="Etunimi" name="etunimi" value=""><br> 
+            <input  type="text" placeholder="Sukunimi"name="sukunimi" value=""> <br>             
+         
     <table  >
         <tr> 
             <th>KisaID</th>            
-            <th>OTTELUNUMERO</th>
-             
-             <th>OTTELU</th></tr>
+            <th>OTTELUID</th>             
+             <th>OTTELU</th>
+             <th>1</th>
+             <th>X</th>
+             <th>2</th></tr>
+             <%data.forEach(ottelut =>{
+              
+                i++
+                %>
              <tr>
-                <%data.forEach(ottelut =>{%>
-                    <form action="/veikkaa" method='POST' >
-                    <td><%=ottelut.kisaID%></td>
+                                   
+                <td><%=ottelut.kisaID%></td>
                 <td ><%=ottelut.otteluID%></td>
-                <td><%=ottelut.ottelu %> </td>
-                <td><input type="text" name="veikkaus"></td>
-                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="veikkaabtn">veikkaa</button></form></td></tr>
-                <%})%>
-                </table>
-</body>
-
-</html>
+                <td><%=ottelut.ottelu %></td>               
+             <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,1"></td>
+                <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,X"></td>
+                <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,2"></td>
+                </tr><%})%></table>
+                <button value="<%=i%>" name="tallennaBtn" >TALLENNA</button>
+              </form>                            
+                </body></html> 

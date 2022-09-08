@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lätkäveikkaus</title>
+    <style>
+        table, th, td {
+          border: 1px solid  black;
+          text-align: center;
+         text-transform: uppercase;
+        }
+        </style>
+    
+</head>
+<header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
+<body>
+    
+<h2><%=nimi%></h2>
+<table  >
+    <tr> 
+              
+                     
+         <th>OTTELU</th>
+         <th>TULOS</th>
+         </tr>
+         <%data.forEach(ottelut =>{  %>
+         <tr>                          
+            <td><%=ottelut.ottelu %></td>
+            <td><%=ottelut.tulos %></td>
+            <%})%></table><br>
+            <table  >
+                <tr> 
+                          
+                                 
+                     <th>PELAAJA</th>
+                     <th>PISTEET</th>
+                     </tr>
+                     <%tulos.forEach(tulokset =>{  %>
+                     <tr>                          
+                        <td><%=tulokset.etunimi %> <%=tulokset.sukunimi  %></td>
+                        
+                        <td><%=tulokset.pisteet%></td>
+
+                        
+                        <%})%></table>
+         </body></html> 
