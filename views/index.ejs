@@ -9,6 +9,9 @@
 <header><h1>LÄTKÄVEIKKAUS</h1>
    <%- include ('./header')%></header>
 <body>
+    <%data.forEach(kisa =>{%><form action="/tulossivu" method='POST' >
+        <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
+        <%})%>
     
 </body>
 </html>

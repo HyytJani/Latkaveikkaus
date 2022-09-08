@@ -24,7 +24,10 @@
 
    //nayta etusivu 
    app.get('/',(req,res)=>{             
-        res.render('./index.ejs')}); 
+    var sql="select * from kisat"
+    yhteys.query(sql,(req,rows)=>{         
+    res.render('index.ejs',{data:rows});});});
+ 
 
     //näytä hallitse otteluita
     app.get('/hallitseotteluita',(req,res)=>{
@@ -132,22 +135,23 @@
         res.redirect('/syotatulos') })
 
     // näytä tulossivu       
-    app.get('/tulossivu',(req,res)=>{
+    app.post('/tulossivu',(req,res)=>{
+        const kisa=parseInt(req.body.siirrybtn)
         let nimi
         let pelit=[];
         let pelaajat=[]       
         
         var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
-        yhteys.query(sql,[15],(req,rows)=>{
+        yhteys.query(sql,[kisa],(req,rows)=>{
             nimi=rows[0].kisojen_nimi;})
                             
         var sql2="select * from ottelut where kisaID='?'"         
-        yhteys.query(sql2,[15],(req,rows,err)=>{
+        yhteys.query(sql2,[kisa],(req,rows,err)=>{
             for(let i=0;i<rows.length;i++){
                 pelit.push({ottelu:rows[i].ottelu,tulos:rows[i].tulos})
             }
         var sql3="SELECT pelaajaID FROM veikkaus WHERE kisaID='?'"
-        yhteys.query(sql3,[15],(req,row)=>{
+        yhteys.query(sql3,[kisa],(req,row)=>{
             let veikkaajat=[];
             pelaajat.push(row[0].pelaajaID)
             let loytyi=false
