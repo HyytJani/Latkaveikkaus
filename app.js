@@ -58,7 +58,15 @@
             if(etuNimi.match(rows[i].etunimi)&& sukuNimi.match(rows[i].sukunimi)&&etuNimi.length==rows[i].etunimi.length&&sukuNimi.length==rows[i].sukunimi.length){
                 nimiOn=true
                 pelaaja=rows[i].pelaajaID;
-                tallennaVeikkaus()                
+                var sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?'";
+                let veikkauspituus
+                yhteys.query(sql,[rows[i].pelaajaID],(req,row)=>{
+                    veikkauspituus=row.length;          
+                    if(veikkauspituus==0){
+                tallennaVeikkaus()}
+                else{
+                    res.render("veikattujo")
+                }});                
                 break;}} 
         if(nimiOn==false){                         
             var sql="INSERT INTO pelaaja(etunimi,sukunimi)VALUES(?,?)";
