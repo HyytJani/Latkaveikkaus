@@ -55,7 +55,7 @@
         yhteys.query(sql,(req,rows)=>{ 
         let nimiOn=false;        
         for(let i=0;i<rows.length;i++){            
-            if(etuNimi.match(rows[i].etunimi)&& sukuNimi.match(rows[i].sukunimi)){
+            if(etuNimi.match(rows[i].etunimi)&& sukuNimi.match(rows[i].sukunimi)&&etuNimi.length==rows[i].etunimi.length&&sukuNimi.length==rows[i].sukunimi.length){
                 nimiOn=true
                 pelaaja=rows[i].pelaajaID;
                 tallennaVeikkaus()                
@@ -149,6 +149,7 @@
         yhteys.query(sql2,[kisa],(req,rows,err)=>{
             for(let i=0;i<rows.length;i++){
                 pelit.push({ottelu:rows[i].ottelu,tulos:rows[i].tulos})
+                
             }
         var sql3="SELECT pelaajaID FROM veikkaus WHERE kisaID='?'"
         yhteys.query(sql3,[kisa],(req,row)=>{
@@ -170,16 +171,16 @@
                             if(veikkaajat.length==pelaajat.length) {
                                 for(let i=0;i<veikkaajat.length;i++){             
                                     sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?'";
-                                    console.log(veikkaajat.length)
                                     yhteys.query(sql,veikkaajat[i].pelaaja,(req,rows)=>{
                                         for(let a=0;a<rows.length;a++){
+                                        
                                         if(rows[a].veikkaus.match(pelit[a].tulos)){
                                             veikkaajat[i].pisteet++
                                         }}
                                         if(i+1==veikkaajat.length){
                                             res.render('tulossivu',{nimi:nimi,data:pelit,tulos:veikkaajat});
                                         }
-                                        console.log(veikkaajat)                                      
+                                                                             
                 
                                     })}         } });}
                                                

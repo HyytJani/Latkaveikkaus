@@ -12,8 +12,8 @@
     
         <h3>LISÄÄ PELAAJAN TIEDOT</h3>
         <form action="/veikkaa" method='POST' >    
-            <input  type="text" placeholder="Etunimi" name="etunimi" value=""><br> 
-            <input  type="text" placeholder="Sukunimi"name="sukunimi" value=""> <br>             
+            <input  type="text" placeholder="Etunimi" name="etunimi" value="" required><br> 
+            <input  type="text" placeholder="Sukunimi"name="sukunimi" value=""required> <br>             
          
     <table  >
         <tr> 
@@ -32,7 +32,7 @@
                 <td><%=ottelut.kisaID%></td>
                 <td ><%=ottelut.otteluID%></td>
                 <td><%=ottelut.ottelu %></td>               
-             <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,1"></td>
+             <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,1" required></td>
                 <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,X"></td>
                 <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,2"></td>
                 </tr><%})%></table>

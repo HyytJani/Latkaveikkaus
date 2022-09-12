@@ -12,7 +12,7 @@
     <h3>Valitse kisa tai syötä uusi</h3>
     <form action="/lisaakisa" method="POST">
     
-        <input  type="text" placeholder="Kisan nimi"name="kisa"> <br><button id="lisaa" >Lisää</button></form><br>
+        <input  type="text" placeholder="Kisan nimi"name="kisa" required> <br><button id="lisaa" >Lisää</button></form><br>
 
 
                 <%data.forEach(kisa =>{%><form action="/siirry" method='POST' >
