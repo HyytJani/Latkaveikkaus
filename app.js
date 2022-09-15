@@ -3,13 +3,13 @@
     const  mysql=require ('mysql');
     const app= express();
     const yhteys=muodostaYhteys();
-    const bodyParser=require("body-parser");
-    const { Console } = require("console");
+    const bodyParser=require("body-parser");  
     app.use(bodyParser.urlencoded({extended:true}));
     app.set('view engine','ejs');
 
   let kisaNro=0;
-
+  let error=""
+  const nyt=Date.parse(new Date());
     //SQL YHTEYS   
     function muodostaYhteys(){
     return mysql.createConnection({
@@ -23,23 +23,62 @@
     if (err)throw err;});
 
    //nayta etusivu 
-   app.get('/',(req,res)=>{             
-    var sql="select * from kisat"
-    yhteys.query(sql,(req,rows)=>{         
-    res.render('index.ejs',{data:rows});});});
- 
+   app.get('/',(req,res)=>{ 
+    let kisaid=[]
+    let kisojenNimet=[]; 
+    let veikattavatKisat=[];
+    var sql="SELECT * FROM kisat"
+    yhteys.query(sql,(req,res)=>{
+        for(let i=0;i<res.length;i++){
+            if(Date.parse(res[i].veikkaus_paattyy)>nyt){
+                veikattavatKisat.push({nimi:res[i].kisojen_nimi,id:res[i].kisaID})
+            }console.log(veikattavatKisat)
+        }
+
+    })           
+    var sql="select kisaID from veikkaus"
+    yhteys.query(sql,(req,rows)=>{          
+        if(rows.length==0){
+            res.render('index.ejs',{data:rows})              
+        }else{            
+            let peliOn=false
+            if(kisaid.length==0){
+                kisaid.push(rows[0].kisaID)
+            }else{
+                console.log(kisaid.length)
+            for(let i=0;i<rows.length;i++){
+                    for(let a=0;a<pelit.length;a++){
+                        if(pelit[a]==rows[i].kisaID){
+                            peliOn=true
+                            console.log('0')
+                            break; } }
+                    if(peliOn==false){
+                        kisaid.push(rows[i].kisaID)                    }
+                    if(peliOn==true){
+                        peliOn=false }}}
+            
+        var sql="SELECT kisojen_nimi,kisaID FROM kisat WHERE kisaID='?'" 
+        for(let i=0;i<kisaid.length;i++){ 
+        yhteys.query(sql,[kisaid[i]],(req,row)=>{
+            console.log(row)
+            kisojenNimet.push({kisan_nimi:row[i].kisojen_nimi,kisaID:row[i].kisaID});
+            if(kisojenNimet.length==kisaid.length){               
+                res.render('index.ejs',{data:kisojenNimet,data1:veikattavatKisat})    
+            }    })}     }     ;});}); 
+    
 
     //näytä hallitse otteluita
     app.get('/hallitseotteluita',(req,res)=>{
         var sql="select * from kisat"
         yhteys.query(sql,(req,rows)=>{         
-        res.render('hallitseotteluita.ejs',{data:rows});});});
+        res.render('hallitseotteluita.ejs',{data:rows,error:error})
+        error="";});});
     
     // nayta veikkaus sivu  
     let i=-1  
     app.get('/veikkaus',(req,res)=>{                       
         var sql="select * from ottelut where kisaID='?'"         
-        yhteys.query(sql,[15],(req,rows)=>{                                             
+        yhteys.query(sql,[57],(req,rows)=>{                                             
         res.render('veikkaus',{data:rows, i:i,})
         ;});});     
            
@@ -104,16 +143,36 @@
 
     //lisaa  kisa
     app.post("/lisaakisa",(req,res)=>{   
-        const kisa=req.body.kisa        
-        var sql="INSERT INTO kisat(kisojen_nimi)VALUES(?)";
-        yhteys.query(sql,[kisa],(req,res,err)=>{
-        if(err){console.log(err)}; });              
-        res.redirect('/hallitseotteluita')});         
+        const kisa=req.body.kisa;
+        const aika=req.body.veikkausPaiva+" "+req.body.veikkausAika+":00" ; 
+       
+        var sql="SELECT kisojen_nimi FROM kisat" ;
+        let samaNimi=false
+        yhteys.query(sql,(req,row)=>{
+            if(row.length==0){            
+            }else{
+            for(let i=0;i<row.length;i++){                 
+                if(kisa.match(row[i].kisojen_nimi)&&kisa.length==row[i].kisojen_nimi.length){
+                    error="Syöttämäsi nimi on jo käytössä"; 
+                    res.redirect('/hallitseotteluita'); 
+                    samaNimi=true;
+                    break;}}}
+            
+            if(samaNimi==false&&nyt>Date.parse(aika)){
+                error="Syötä aika tulevaisuudesta" 
+                res.redirect('/hallitseotteluita') 
+                           
+            }
+            if(samaNimi==false&& Date.parse(aika)>nyt){                   
+            var sql="INSERT INTO kisat(kisojen_nimi, veikkaus_paattyy)VALUES(?,?)";
+            yhteys.query(sql,[kisa,aika],(req,res,err)=>{
+            if(err){console.log(err)}; });              
+            res.redirect('/hallitseotteluita')  ;}})});         
 
     //lisaa  ottelut
     app.post("/lisaaottelu",(req,res)=>{   
         const peli=req.body.ottelu               
-        var sql="INSERT INTO ottelut(kisaID,ottelu)VALUES(?,?)";
+        var sql="INSERT INTO ottelut(kisaID,ottelu,tulos)VALUES(?,?,'0')";
         yhteys.query(sql,[kisaNro,peli],(req,res,err)=>{
         if(err)throw(err);});              
         res.redirect('/paivita')});
@@ -159,6 +218,7 @@
                 pelit.push({ottelu:rows[i].ottelu,tulos:rows[i].tulos})
                 
             }
+
         var sql3="SELECT pelaajaID FROM veikkaus WHERE kisaID='?'"
         yhteys.query(sql3,[kisa],(req,row)=>{
             let veikkaajat=[];

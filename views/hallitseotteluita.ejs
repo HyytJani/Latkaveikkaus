@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+   
     <title>Lätkäveikkaus</title>
-    
+    <style>
+        #error{ color:red}
+    </style>
 </head>
 <header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
 <body>
-    <h3>Valitse kisa tai syötä uusi</h3>
+    <h3> Syötä uusi kisa</h3>
     <form action="/lisaakisa" method="POST">
-    
-        <input  type="text" placeholder="Kisan nimi"name="kisa" required> <br><button id="lisaa" >Lisää</button></form><br>
+        <p id="error"><%=error%></p>
+        <p>Kisannimi:</p>
+        <input  type="text" name="kisa" required>
+        <p>Veikkauksen päättymisaika</p>
+        <input type="date" name="veikkausPaiva" required>
+        
+        <input type="time" name="veikkausAika" required>
+         <br><button id="lisaa" >Lisää</button></form><br>
+         <h3>Valitse kisa jota haluat muokata</h3>
 
 
                 <%data.forEach(kisa =>{%><form action="/siirry" method='POST' >
                 <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
                 <%})%>
                 
-<body>
+
     
 </body>
+
 </html>
