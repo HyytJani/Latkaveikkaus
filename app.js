@@ -7,7 +7,7 @@
     app.use(bodyParser.urlencoded({extended:true}));
     app.set('view engine','ejs');
 
-  let kisaNro=0;
+ 
   let error=""
   const nyt=Date.parse(new Date());
     //SQL YHTEYS   
@@ -68,7 +68,7 @@
     app.get('/hallitseotteluita',(req,res)=>{
         var sql="select * from kisat"
         yhteys.query(sql,(req,rows)=>{         
-        res.render('hallitseotteluita.ejs',{data:rows,error:error})
+        res.render('./yllapito/hallitseotteluita.ejs',{data:rows,error:error})
         error="";});});
     
     // nayta veikkaus sivu  
@@ -131,13 +131,13 @@
         kisaNro=parseInt(num);               
         var sql="select * from ottelut where kisaID='?'"         
         yhteys.query(sql,[kisaNro],(req,rows)=>{                         
-        res.render('syotapeli',{data:rows});});});
+        res.render('./yllapito/syotapeli',{data:rows});});});
 
     //paivita syotapeli sivu        
     app.get('/paivita',(req,res)=>{                       
         var sql="select * from ottelut where kisaID='?'"            
         yhteys.query(sql,[kisaNro],(req,rows)=>{                         
-        res.render('syotapeli',{data:rows});});});        
+        res.render('./yllapito/syotapeli',{data:rows});});});        
 
     //lisaa  kisa
     app.post("/lisaakisa",(req,res)=>{   
@@ -187,7 +187,7 @@
         const num=parseInt( req.body.siirrybtn2);                  
         var sql="select * from ottelut where kisaID='?'"         
         yhteys.query(sql,[num],(req,rows)=>{                         
-        res.render('syotatulos',{data:rows});});});      
+        res.render('./yllapito/syotatulos',{data:rows});});});      
               
     //paivita syotatulos
     app.post('/paivitapeli',(req,res)=>{        
