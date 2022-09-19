@@ -32,9 +32,8 @@
         for(let i=0;i<res.length;i++){
             if(Date.parse(res[i].veikkaus_paattyy)>nyt){
                 veikattavatKisat.push({nimi:res[i].kisojen_nimi,id:res[i].kisaID})
-            }console.log(veikattavatKisat)
+            }
         }
-
     })           
     var sql="select kisaID from veikkaus"
     yhteys.query(sql,(req,rows)=>{          
@@ -45,12 +44,11 @@
             if(kisaid.length==0){
                 kisaid.push(rows[0].kisaID)
             }else{
-                console.log(kisaid.length)
+              
             for(let i=0;i<rows.length;i++){
                     for(let a=0;a<pelit.length;a++){
                         if(pelit[a]==rows[i].kisaID){
                             peliOn=true
-                            console.log('0')
                             break; } }
                     if(peliOn==false){
                         kisaid.push(rows[i].kisaID)                    }
@@ -60,7 +58,6 @@
         var sql="SELECT kisojen_nimi,kisaID FROM kisat WHERE kisaID='?'" 
         for(let i=0;i<kisaid.length;i++){ 
         yhteys.query(sql,[kisaid[i]],(req,row)=>{
-            console.log(row)
             kisojenNimet.push({kisan_nimi:row[i].kisojen_nimi,kisaID:row[i].kisaID});
             if(kisojenNimet.length==kisaid.length){               
                 res.render('index.ejs',{data:kisojenNimet,data1:veikattavatKisat})    
@@ -75,10 +72,11 @@
         error="";});});
     
     // nayta veikkaus sivu  
-    let i=-1  
-    app.get('/veikkaus',(req,res)=>{                       
+    let i=-1    
+    app.post('/veikkaus',(req,res)=>{
+        const veikattava=parseInt( req.body.siirrybtn1);                       
         var sql="select * from ottelut where kisaID='?'"         
-        yhteys.query(sql,[57],(req,rows)=>{                                             
+        yhteys.query(sql,[veikattava],(req,rows)=>{                                             
         res.render('veikkaus',{data:rows, i:i,})
         ;});});     
            
@@ -185,11 +183,10 @@
         res.redirect('/paivita');})         
 
     // nayta syötätulossivu    
-    app.get('/syotatulos',(req,res)=>{ 
-        const num=req.body.siirrybtn
-        kisaNro=parseInt(num);               
+    app.post('/syotatulos',(req,res)=>{ 
+        const num=parseInt( req.body.siirrybtn2);                  
         var sql="select * from ottelut where kisaID='?'"         
-        yhteys.query(sql,[15],(req,rows)=>{                         
+        yhteys.query(sql,[num],(req,rows)=>{                         
         res.render('syotatulos',{data:rows});});});      
               
     //paivita syotatulos

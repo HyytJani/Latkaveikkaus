@@ -10,7 +10,7 @@
         #error{ color:red}
     </style>
 </head>
-<header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
+<header><h1>VEIKKAUSPALVELU</h1>   <%- include ('./header')%></header>
 <body>
     <h3> Syötä uusi kisa</h3>
     <form action="/lisaakisa" method="POST">
@@ -22,11 +22,17 @@
         
         <input type="time" name="veikkausAika" required>
          <br><button id="lisaa" >Lisää</button></form><br>
-         <h3>Valitse kisa jota haluat muokata</h3>
+         <h3>Kisat joihin voit lisätä otteluita</h3>
 
 
                 <%data.forEach(kisa =>{%><form action="/siirry" method='POST' >
                 <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
+                <%})%>
+                <h3>Kisat joihin voit lisätä tuloksia</h3>
+
+
+                <%data.forEach(kisa =>{%><form action="/syotatulos" method='POST' >
+                <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn2"> <%= kisa.kisojen_nimi %></button></form>
                 <%})%>
                 
 
