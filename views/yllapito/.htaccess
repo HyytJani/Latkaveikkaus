@@ -1,0 +1,12 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^example\.com [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://example.com/$1 [R,L]
+
+DirectoryIndex disabled
+
+RewriteEngine On
+RewriteRule ^$ http://127.0.0.1:50000 / [P,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:50000 /$1 [P,L]

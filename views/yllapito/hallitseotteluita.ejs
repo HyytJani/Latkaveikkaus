@@ -13,7 +13,7 @@
 <header><h1>VEIKKAUSPALVELU</h1>   <%- include ('../header')%></header>
 <body>
     <h3> Syötä uusi kisa</h3>
-    <form action="/lisaakisa" method="POST">
+    <form action="/app/lisaakisa" method="POST">
         <p id="error"><%=error%></p>
         <p>Kisannimi:</p>
         <input  type="text" name="kisa" required>
@@ -25,13 +25,13 @@
          <h3>Kisat joihin voit lisätä otteluita</h3>
 
 
-                <%data.forEach(kisa =>{%><form action="/siirry" method='POST' >
+                <%data.forEach(kisa =>{%><form action="/yllapito/syotapeli" method='POST' >
                 <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
                 <%})%>
                 <h3>Kisat joihin voit lisätä tuloksia</h3>
 
 
-                <%data.forEach(kisa =>{%><form action="/syotatulos" method='POST' >
+                <%data.forEach(kisa =>{%><form action="/yllapito/syotatulos" method='POST' >
                 <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn2"> <%= kisa.kisojen_nimi %></button></form>
                 <%})%>
                 
