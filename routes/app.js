@@ -11,6 +11,7 @@
   let error=""
   let kisaNro
   const nyt=Date.parse(new Date());
+    
 
     //SQL YHTEYS   
     function muodostaYhteys(){
@@ -33,55 +34,75 @@
     yhteys.query(sql,(req,res)=>{
         for(let i=0;i<res.length;i++){
             if(Date.parse(res[i].veikkaus_paattyy)>nyt){
-                veikattavatKisat.push({nimi:res[i].kisojen_nimi,id:res[i].kisaID})
-            }
-        }
-    })           
+                let aika=res[i].veikkaus_paattyy.toLocaleString()
+                veikattavatKisat.push({nimi:res[i].kisojen_nimi,id:res[i].kisaID,aika:aika})     }
+                 }            
+             })           
     var sql="select kisaID from veikkaus"
     yhteys.query(sql,(req,rows)=>{          
         if(rows.length==0){
-            res.render('index.ejs',{data:rows})              
-        }else{            
+            res.render('index.ejs',{data:rows,data1:veikattavatKisat})              
+        }else{                   
             let peliOn=false
             if(kisaid.length==0){
-                kisaid.push(rows[0].kisaID)
-            }else{
-              
+                kisaid.push(rows[0].kisaID)            }                            
             for(let i=0;i<rows.length;i++){
-                    for(let a=0;a<pelit.length;a++){
-                        if(pelit[a]==rows[i].kisaID){
-                            peliOn=true
-                            break; } }
+                    for(let a=0;a<kisaid.length;a++){
+                    if(kisaid[a]==rows[i].kisaID){
+                        peliOn=true
+                        break; } }
                     if(peliOn==false){
                         kisaid.push(rows[i].kisaID)                    }
                     if(peliOn==true){
-                        peliOn=false }}}
-            
+                        peliOn=false }}                                    
         var sql="SELECT kisojen_nimi,kisaID FROM kisat WHERE kisaID='?'" 
         for(let i=0;i<kisaid.length;i++){ 
-        yhteys.query(sql,[kisaid[i]],(req,row)=>{
-            kisojenNimet.push({kisan_nimi:row[i].kisojen_nimi,kisaID:row[i].kisaID});
+        yhteys.query(sql,[kisaid[i]],(req,row)=>{           
+            kisojenNimet.push({kisan_nimi:row[0].kisojen_nimi,kisaID:row[0].kisaID});
             if(kisojenNimet.length==kisaid.length){                           
-                res.render('index.ejs',{data:kisojenNimet,data1:veikattavatKisat})    
+                res.render('index.ejs',{data1:veikattavatKisat,data:kisojenNimet})    
             }    })}     }     ;});});    
     
     // nayta veikkaus sivu  
-    let i=-1    
+    let i=-1   
+    let veikattavaPeli 
     router.post('/veikkaus',(req,res)=>{
-        const veikattava=parseInt( req.body.siirrybtn1);                       
+        let nimi
+        const veikattava=parseInt( req.body.siirrybtn1); 
+        veikattavaPeli=veikattava;
+        var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
+        yhteys.query(sql,[veikattava],(req,rows)=>{
+            nimi=rows[0].kisojen_nimi;})                      
         var sql="select * from ottelut where kisaID='?'"         
         yhteys.query(sql,[veikattava],(req,rows)=>{                                             
-        res.render('veikkaus',{data:rows, i:i,})
-        ;});});     
+        res.render('veikkaus',{data:rows, i:i,error:error,nimi:nimi})
+        ;});}); 
+    // paivita veikkaus sivu  
+       
+    router.get('/veikkaus',(req,res)=>{ 
+        let nimi  
+        var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
+        yhteys.query(sql,[veikattavaPeli],(req,rows)=>{
+            nimi=rows[0].kisojen_nimi;})                             
+        var sql="select * from ottelut where kisaID='?'"         
+        yhteys.query(sql,[veikattavaPeli],(req,rows)=>{                                             
+        res.render('veikkaus',{data:rows, i:i,error:error,nimi:nimi}) ;
+        error="";
+    });});     
            
     //lisaa  veikkaus    
     router.post("/veikkaa",(req,res)=>{
         const etuNimi=req.body.etunimi
-        const sukuNimi=req.body.sukunimi        
+        const sukuNimi=req.body.sukunimi 
+          let kisanumero=[];
+       kisanumero=req.body.valinta[0].split(',') 
+       let kisa=parseInt(kisanumero[0])            
         const rb= [];
         var pelaaja= "";
+        console.log(kisanumero[0])
         for(let a=0;a<=req.body.tallennaBtn;a++){                                    
-            rb.push(req.body.valinta[a])}
+            rb.push(req.body.valinta[a])
+       }
         var sql="select pelaajaID,etunimi,sukunimi from pelaaja"        
         yhteys.query(sql,(req,rows)=>{ 
         let nimiOn=false;        
@@ -89,14 +110,15 @@
             if(etuNimi.match(rows[i].etunimi)&& sukuNimi.match(rows[i].sukunimi)&&etuNimi.length==rows[i].etunimi.length&&sukuNimi.length==rows[i].sukunimi.length){
                 nimiOn=true
                 pelaaja=rows[i].pelaajaID;
-                var sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?'";
+                var sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?'AND kisaID='?'";
                 let veikkauspituus
-                yhteys.query(sql,[rows[i].pelaajaID],(req,row)=>{
+                yhteys.query(sql,[rows[i].pelaajaID,kisa],(req,row)=>{
                     veikkauspituus=row.length;          
                     if(veikkauspituus==0){
                 tallennaVeikkaus()}
                 else{
-                    res.render("veikattujo")
+                    error="Syöttämälläsi nimellä on jo veikattu tässä kisassa"; 
+                    res.redirect('/app/veikkaus');                     
                 }});                
                 break;}} 
         if(nimiOn==false){                         
@@ -151,20 +173,53 @@
                         veikkaajat.push({pelaaja:pelaajat[i],etunimi:row[0].etunimi,sukunimi:row[0].sukunimi,pisteet:0})                      
                             if(veikkaajat.length==pelaajat.length) {
                                 for(let i=0;i<veikkaajat.length;i++){             
-                                    sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?'";
-                                    yhteys.query(sql,veikkaajat[i].pelaaja,(req,rows)=>{
-                                        for(let a=0;a<rows.length;a++){
-                                        
+                                    sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?'and kisaID='?'";
+                                    yhteys.query(sql,[veikkaajat[i].pelaaja,kisa],(req,rows)=>{
+                                        for(let a=0;a<rows.length;a++){                                           
                                         if(rows[a].veikkaus.match(pelit[a].tulos)){
-                                            veikkaajat[i].pisteet++
-                                        }}
+                                            veikkaajat[i].pisteet++    }}
                                         if(i+1==veikkaajat.length){
-                                            res.render('tulossivu',{nimi:nimi,data:pelit,tulos:veikkaajat});    }                                                                      
-                
-                                    })}         } });}                                           
-                                                                                      
-                                                                    
-                         }) ;   }) })     
+                                            res.render('tulossivu',{nimi:nimi,data:pelit,tulos:veikkaajat});    }                                                             
+                                                    })}        } });}                      }) ;   }) })  
+                                                    
+//nayta veikkaukset sivu
+router.post('/veikkaukset',(req,res)=>{
+    let veikkaajat=[]
+    let veikkaukset=[]
+    let rivi
+    let veikkaus=[]
+    sql="SELECT DISTINCT otteluID FROM veikkaus WHERE kisaID='?'"
+    yhteys.query(sql,[64],(req,row)=>{
+        sql="SELECT DISTINCT pelaajaID FROM veikkaus WHERE kisaID='?'"
+        yhteys.query(sql,[64],(req,rows)=>{            
+            for(let i=0;i<rows.length;i++){
+            sql="SELECT etunimi,sukunimi FROM pelaaja WHERE pelaajaID='?'"
+            yhteys.query(sql,[rows[i].pelaajaID],(req,row1)=>{
+               
+                sql="SELECT veikkaus FROM veikkaus WHERE pelaajaID='?' AND kisaID='?'"              
+                yhteys.query(sql,[rows[i].pelaajaID,64],(req,row2)=>{           
+                    
+                    veikkaukset=( Object.values(JSON.parse(JSON.stringify(row2))) ) 
+                    
+                    for(let a=0;a<veikkaukset.length;a++){                        
+                        veikkaus[a]=veikkaukset[a].veikkaus; 
+                          }
+                          veikkaajat.push({nimi:row1[0].etunimi+" "+row1[0].sukunimi,veikkaus})
+                          console.log(veikkaajat)
+                           veikkaus=[]    
+                     if(rows.length==veikkaajat.length) {
+                        res.render('veikkaukset',{data:row,data1:veikkaajat})   }  }) 
+
+                   
+                                                                                                  
+               })} 
+                                           
+                                                                
+            
+                                    
+        })
+    })
+})
 
 
 

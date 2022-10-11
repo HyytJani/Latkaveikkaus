@@ -4,12 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lätkäveikkaus</title>
+    <title>VEIKKAUSPALVELU</title>
+    <style>
+        body{
+            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);
+           
+        }
+        #error{ color:red; text-transform: uppercase;
+            }
+        #nimi{
+                text-transform: uppercase; 
+            }
+
+    </style>
     
 </head>
-<header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
+<header><h1>VEIKKAUSPALVELU</h1>   <%- include ('./header')%></header>
+<h2 id="nimi"><%=nimi%></h2>
 <body>
-    
+    <p id="error"><%=error%></p>
         <h3>LISÄÄ PELAAJAN TIEDOT</h3>
         <form action="/app/veikkaa" method='POST' >    
             <input  type="text" placeholder="Etunimi" name="etunimi" value="" required><br> 

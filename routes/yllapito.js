@@ -8,6 +8,7 @@ const auth = require('./auth')
 router.use(auth)
 const yhteys=muodostaYhteys();
 let error=""
+const nyt=Date.parse(new Date());
     //SQL YHTEYS   
     function muodostaYhteys(){
         return mysql.createConnection({
@@ -29,16 +30,24 @@ let error=""
     // nayta syötapeli sivu    
     router.post('/syotapeli',(req,res)=>{
         const num=req.body.siirrybtn
-        kisaNro=parseInt(num);               
+        kisaNro=parseInt(num);
+        let nimi 
+        var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
+        yhteys.query(sql,[kisaNro],(req,rows)=>{
+            nimi=rows[0].kisojen_nimi;})                        
         var sql="select * from ottelut where kisaID='?'"         
         yhteys.query(sql,[kisaNro],(req,rows)=>{                         
-        res.render('./yllapito/syotapeli',{data:rows});});});
+        res.render('./yllapito/syotapeli',{data:rows,nimi:nimi});});});
 
     //paivita syotapeli sivu        
-    router.get('/paivita',(req,res)=>{                       
+    router.get('/paivita',(req,res)=>{ 
+        let nimi 
+        var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
+        yhteys.query(sql,[kisaNro],(req,rows)=>{
+            nimi=rows[0].kisojen_nimi;})                                              
         var sql="select * from ottelut where kisaID='?'"            
         yhteys.query(sql,[kisaNro],(req,rows)=>{                         
-        res.render('./yllapito/syotapeli',{data:rows});});});        
+        res.render('./yllapito/syotapeli',{data:rows,nimi:nimi});});});        
 
     //lisaa  kisa
     router.post("/lisaakisa",(req,res)=>{   
@@ -53,18 +62,18 @@ let error=""
             for(let i=0;i<row.length;i++){                 
                 if(kisa.match(row[i].kisojen_nimi)&&kisa.length==row[i].kisojen_nimi.length){
                     error="Syöttämäsi nimi on jo käytössä"; 
-                    res.redirect('/app/hallitseotteluita'); 
+                    res.redirect('/yllapito/hallitseotteluita'); 
                     samaNimi=true;
                     break;}}}            
             if(samaNimi==false&&nyt>Date.parse(aika)){
                 error="Syötä aika tulevaisuudesta" 
-                res.redirect('/app/hallitseotteluita')                            
+                res.redirect('/yllapito/hallitseotteluita')                            
             }
             if(samaNimi==false&& Date.parse(aika)>nyt){                   
             var sql="INSERT INTO kisat(kisojen_nimi, veikkaus_paattyy)VALUES(?,?)";
             yhteys.query(sql,[kisa,aika],(req,res,err)=>{
             if(err){console.log(err)}; });              
-            res.redirect('/app/hallitseotteluita')  ;}})});         
+            res.redirect('/yllapito/hallitseotteluita')  ;}})});         
 
     //lisaa  ottelut
     router.post("/lisaaottelu",(req,res)=>{   
@@ -72,7 +81,7 @@ let error=""
         var sql="INSERT INTO ottelut(kisaID,ottelu,tulos)VALUES(?,?,'0')";
         yhteys.query(sql,[kisaNro,peli],(req,res,err)=>{
         if(err)throw(err);});              
-        res.redirect('/app/paivita')});
+        res.redirect('/yllapito/paivita')});
 
     //poista peli
     router.post('/poistapeli',(req,res)=>{        
@@ -84,15 +93,23 @@ let error=""
     // nayta syötätulossivu 
     var num   
     router.post('/syotatulos',(req,res)=>{ 
-        num=parseInt( req.body.siirrybtn2);                  
+        num=parseInt( req.body.siirrybtn2);
+        let nimi 
+        var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
+        yhteys.query(sql,[num],(req,rows)=>{
+            nimi=rows[0].kisojen_nimi;})                   
         var sql="select * from ottelut where kisaID='?'"         
         yhteys.query(sql,[num],(req,rows)=>{                         
-        res.render('./yllapito/syotatulos',{data:rows});});}); 
+        res.render('./yllapito/syotatulos',{data:rows,nimi:nimi});});}); 
     // nayta syötätulossivu    
-    router.get('/syotatulos',(req,res)=>{                            
+    router.get('/syotatulos',(req,res)=>{ 
+        let nimi 
+        var sql="SELECT kisojen_nimi FROM kisat WHERE kisaID='?'" 
+        yhteys.query(sql,[num],(req,rows)=>{
+            nimi=rows[0].kisojen_nimi;})                             
         var sql="select * from ottelut where kisaID='?'"         
         yhteys.query(sql,[num],(req,rows)=>{                         
-        res.render('./yllapito/syotatulos',{data:rows});});});     
+        res.render('./yllapito/syotatulos',{data:rows,nimi:nimi});});});     
               
     //paivita syotatulos
     router.post('/paivitatulos',(req,res)=>{        

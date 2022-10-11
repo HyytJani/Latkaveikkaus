@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table, th, td {
+        border: 1px solid  black;
+        text-align: center;
+        text-transform: uppercase;
+        }
+        body{
+            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);           
+        }      
+    </style>
+</head>
+<header><h1>VEIKKAUSPALVELU</h1>
+   <%- include ('./header')%>
+
+</header>
+<body>  <table  >
+    <tr> 
+        <th>PELAAJA</th>
+        <%data.forEach(otsikko =>{  %>                 
+         <th><%=otsikko.otteluID%></th> <%})%></tr> 
+        <tr>
+        
+         <%data1.forEach(pelaaja =>{  %>                             
+            <td><%=pelaaja.nimi%></td>
+            <td><%=pelaaja.veikkaus[0]%></td>
+            <td><%=pelaaja.veikkaus[1]%></td>
+            <td><%=pelaaja.veikkaus[2]%></td>
+            <td><%=pelaaja.veikkaus[3]%></td>
+            <td><%=pelaaja.veikkaus[4]%></td>
+
+            
+            
+            </tr> <%})%> 
+            <table  >
+              
+                          
+                                 
+
+    
+</body>
+</html>

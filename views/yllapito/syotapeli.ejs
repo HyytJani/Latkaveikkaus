@@ -5,14 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEIKKAUSPALVELU</title>
+    <style>
+        body{
+            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);      
+        }
+        #nimi{
+                text-transform: uppercase;            }
+
+    </style>
     
 </head>
 <header><h1>VEIKKAUSPALVELU</h1>   <%- include ('../header')%></header>
 <body>
+    <h2 id="nimi"><%=nimi%></h2>
    
 
 
-    <form action="/app/lisaaottelu" method="POST">
+    <form action="/yllapito/lisaaottelu" method="POST">
         <h3>Syötä ottelu</h3>        
         <input  id="input" type="text" placeholder="joukkue-joukkue" name="ottelu" required>  <button id="lisaa" >Lisää</button></form>
 

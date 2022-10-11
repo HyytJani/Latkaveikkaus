@@ -7,13 +7,16 @@
    
     <title>Lätkäveikkaus</title>
     <style>
-        #error{ color:red}
+        #error{ color:red; text-transform: uppercase;}
+        body{
+            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);         
+        }
     </style>
 </head>
 <header><h1>VEIKKAUSPALVELU</h1>   <%- include ('../header')%></header>
 <body>
     <h3> Syötä uusi kisa</h3>
-    <form action="/app/lisaakisa" method="POST">
+    <form action="/yllapito/lisaakisa" method="POST">
         <p id="error"><%=error%></p>
         <p>Kisannimi:</p>
         <input  type="text" name="kisa" required>
