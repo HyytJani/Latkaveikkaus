@@ -6,12 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEIKKAUSPALVELU</title>
     <style>  /*taustan liukuväri*/
-        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}</style>
+        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}
+        table, th, td {
+        border: 1px solid  black;
+        text-align: center;
+        text-transform: uppercase;        }      
+        #kisa{text-transform: uppercase;}
+        #pelaaja{text-transform: uppercase;} </style>
 </head>
 <header><h1>VEIKKAUSPALVELU</h1>
    <%- include ('./header')%>
 </header>
 <body>
-    <h2>Veikkauksesi on tallennettu</h2>      
+    <h2>Veikkauksesi on tallennettu</h2> 
+    
+    <h3 id="kisa" ><%=veikkaus[0].kisojen_nimi%></h3>
+<h4 id="pelaaja" ><%=veikkaus[0].etunimi%> <%=veikkaus[0].sukunimi%> </h4>
+   <table><tr><th>Ottelu</th>
+    <th>Veikkaus</th></tr>
+    <tr><%veikkaus.forEach(pelaaja =>{  %>   
+    <td><%=pelaaja.ottelu%></a></td>                
+    <td><%=pelaaja.veikkaus%></td></tr><%})%></table>
 </body>
 </html>

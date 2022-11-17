@@ -107,11 +107,16 @@ let error=""
         for(let a=0;a<rb.length;a++){
         const veikkaus=rb[a].split(",")                              
         var sql="INSERT INTO veikkaus(kisaID,pelaajaID,otteluID,veikkaus)VALUES(?,?,?,?)";
-        yhteys.query(sql,[veikkaus[0],id,veikkaus[1],veikkaus[2]],(req,res,error)=>{
-        if(error)console.log(error)  ; });} 
+        yhteys.query(sql,[veikkaus[0],id,veikkaus[1],veikkaus[2]],(req,rows,error)=>{
+        if(error)throw error ; 
+        var sql2="Select veikkaus.veikkausID,kisojen_nimi,veikkaus,etunimi,sukunimi,ottelu FROM ottelut,veikkaus,kisat,pelaaja WHERE veikkaus.otteluID=ottelut.otteluID AND kisat.kisaID=ottelut.kisaID AND veikkaus.pelaajaID=pelaaja.pelaajaID AND veikkaus.pelaajaID=? AND veikkaus.kisaID=?";
+        yhteys.query(sql2,[id,veikkaus[0]],(err,row)=>{
+        if(err)throw err ; 
+        res.render("veikkaustallennettu",{veikkaus:row})
+        })});} 
         pelaaja=""  
         i=-1;             
-        res.render("veikkaustallennettu")}});                    
+        }});                    
                      
     // näytä tulossivu       
     router.post('/tulossivu',(req,res)=>{
