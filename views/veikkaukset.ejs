@@ -12,27 +12,31 @@
         }
         body{
             background-image: linear-gradient(to right, rgb(179, 209, 245), blue);           
-        }      
+        }
+      
+     
     </style>
 </head>
 <header><h1>VEIKKAUSPALVELU</h1>
    <%- include ('./header')%>
 
 </header>
-<body>  <table  >
+<body>
+    <h2><%=nimi%></h2>
+         <table  >
     <tr> 
         <th>PELAAJA</th>
         <%data.forEach(otsikko =>{  %>                 
-         <th><%=otsikko.otteluID%></th> <%})%></tr> 
-        <tr>
-        
-         <%data1.forEach(pelaaja =>{  %>                             
-            <td><%=pelaaja.nimi%></td>
-            <td><%=pelaaja.veikkaus[0]%></td>
-            <td><%=pelaaja.veikkaus[1]%></td>
-            <td><%=pelaaja.veikkaus[2]%></td>
-            <td><%=pelaaja.veikkaus[3]%></td>
-            <td><%=pelaaja.veikkaus[4]%></td>
+         <th id="ottelu" ><%=otsikko.ottelu%></th> <%})%></tr> 
+         <tr>
+       
+         <%data1.forEach(pelaaja =>{  %>   
+            <td><a href="/app/naytaveikkaus/<%=nimi%>/<%=pelaaja.pelaajaID%>"><%=pelaaja.nimi%></a></td>                     
+            <%for(let i=0;i < pelaaja.veikkaus.length;i++){%>
+            <td><%=pelaaja.veikkaus[i]%></td><%}%> 
+         
+            
+
 
             
             

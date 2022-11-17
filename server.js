@@ -1,13 +1,13 @@
 const express=require("express");
-const http = require("http");
+const http = require("http");//http moduuli
 const server=express();
-server.set('view engine','ejs');
+server.set('view engine','ejs');//ejs
   
-server.listen(8000) 
+server.listen(8000) //portti joka odottaa käyttäjän toimia 
 
-const approute=require("./routes/app")
-const yllapitoroute=require("./routes/yllapito")
-
+const approute=require("./routes/app")//reitti app.js:n
+const yllapitoroute=require("./routes/yllapito")//reitti yllapito.js:n
+//ohjaus etusivulle
 server.get('/',(req,res)=>{
     res.redirect('/app/index')
 

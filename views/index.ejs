@@ -6,30 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEIKKAUSPALVELU</title>
     <style>
+      /*taustan liukuväri'*/
         body{
-            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);           
-        }      
+            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}      
     </style>
 </head>
 <header><h1>VEIKKAUSPALVELU</h1>
-   <%- include ('./header')%>
-
+   <%- include ('./header')%>      <!--hakee valikon painikkeet heades.ejs tiedostosta-->
 </header>
-<body><h4>Voit veikata seuraavissa kisoissa</h4>
-    <%data1.forEach(peli =>{%><form action="/app/veikkaus" method='POST' >
-        <button onclick="this.form.submit()" value="<%=peli.id%>" name="siirrybtn1"> <%= peli.nimi %></button> <p>Päättyy <%= peli.aika %></p></form>
+<body>
+    <h4>Voit veikata seuraavissa kisoissa</h4>
+    <%data1.forEach(peli =>{%><form action="/app/veikkaus" method='POST' ><!--data1 veikattavat pelit. klikkaus siirtää veikkaus sivulle-->
+        <button onclick="this.form.submit()" value="<%=peli.kisaID%>" name="siirrybtn1"> <%= peli.kisojen_nimi %></button>
+        <p>Päättyy <%= peli.veikkaus_paattyy %></p></form>
         <%})%>
-
     <h4>Tarkastele tuloksia</h4>
-    <%data.forEach(kisa =>{%><form action="/app/tulossivu" method='POST' >
-        <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisan_nimi %></button></form>
+    <%data.forEach(kisa =>{%><form action="/app/tulossivu" method='POST' ><!--data veikatutpelit. klikkaus siirtää tulos sivulle-->
+        <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
         <%})%>
-
     <h4>Tarkastele veikkauksia</h4> 
-    <form action="/app/veikkaukset" method='POST' >
-        <button onclick="this.form.submit()" value="" name="siirrybtn"> button</button></form>
-        
-        
-    
+    <%data.forEach(veikkaus =>{%><form action="/app/veikkaukset" method='POST' ><!--data veikatut pelit. klikkaus siirtää veikkaukset sivulle-->
+        <button onclick="this.form.submit()" value="<%=veikkaus.kisaID%>" name="siirrybtn"> <%= veikkaus.kisojen_nimi %></button></form>
+        <%})%>  <!--klikkaus siirtää actionin määräämään osoitteeseen ja value lähettää tiedon mitä kisaa on klikattu--> 
 </body>
 </html>

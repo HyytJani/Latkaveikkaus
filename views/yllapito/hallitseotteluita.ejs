@@ -5,41 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
    
-    <title>Lätkäveikkaus</title>
+    <title>VEIKKAUSPALVELU</title>
     <style>
-        #error{ color:red; text-transform: uppercase;}
-        body{
-            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);         
-        }
+        #error{ color:red; text-transform: uppercase;}/*Error tekstin punainen väri*/
+        /*taustan liuuväri*/
+        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue); }
     </style>
 </head>
-<header><h1>VEIKKAUSPALVELU</h1>   <%- include ('../header')%></header>
+<header><h1>VEIKKAUSPALVELU</h1>
+       <%- include ('../header')%><!--valikkopalkki-->
+    </header>
 <body>
     <h3> Syötä uusi kisa</h3>
     <form action="/yllapito/lisaakisa" method="POST">
-        <p id="error"><%=error%></p>
+        <p id="error"><%=error%></p><!--näyttää error tekstin, jos sellainen on tallennettu-->
         <p>Kisannimi:</p>
         <input  type="text" name="kisa" required>
         <p>Veikkauksen päättymisaika</p>
-        <input type="date" name="veikkausPaiva" required>
-        
+        <input type="date" name="veikkausPaiva" required>        
         <input type="time" name="veikkausAika" required>
          <br><button id="lisaa" >Lisää</button></form><br>
+         <!--Klikkaus lähettää kisojen nimen ja veikkauksen päättymis ajankohdan ja lisää kisan-->
          <h3>Kisat joihin voit lisätä otteluita</h3>
-
-
+                <!--kisat joihin voi lisätä otteluita muuttujasta data-->
                 <%data.forEach(kisa =>{%><form action="/yllapito/syotapeli" method='POST' >
                 <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn"> <%= kisa.kisojen_nimi %></button></form>
-                <%})%>
+                <%})%><!--Klikkaus lähettää kisaID:n ja pyytää sivua syötäpeli-->
                 <h3>Kisat joihin voit lisätä tuloksia</h3>
-
-
-                <%data.forEach(kisa =>{%><form action="/yllapito/syotatulos" method='POST' >
+                 <!--kisat joihin voi lisätätuloksia muuttujasta data2-->
+                <%data2.forEach(kisa =>{%><form action="/yllapito/syotatulos" method='POST' >
                 <button onclick="this.form.submit()" value="<%=kisa.kisaID%>" name="siirrybtn2"> <%= kisa.kisojen_nimi %></button></form>
-                <%})%>
-                
-
-    
-</body>
-
-</html>
+                <%})%><!--Klikkaus lähettää kisaID:n ja pyytää sivua syötätulos-->
+    </body></html>

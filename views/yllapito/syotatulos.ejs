@@ -5,40 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEIKKAUSPALVELU</title>
-    <style>
-        body{
-            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);      
-        }
-        #nimi{
-                text-transform: uppercase;            }
-
-    </style>
-    
+    <style>       
+        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue);  } /*Taustan liukuväri*/        
+        #nimi{text-transform: uppercase;}/*kisan nimi isoilla kirjaimilla*/
+        #ottelu{text-transform: uppercase;}/*ottelu isoilla kirjaimilla*/
+    </style>    
 </head>
-<header><h1>VEIKKAUSPALVELU</h1>   <%- include ('../header')%></header>
-<h2 id="nimi"><%=nimi%></h2>
-
-
-    <table  >
-        <tr> 
-                        
-            <th>NRO</th>
-             
-             <th>OTTELU</th>
-             
-             <th>TULOS</th></tr>
-             <tr>
-                <%data.forEach(ottelut =>{%>
-                    <form action="/yllapito/paivitatulos" method='POST' >
-                   
+<header><h1>VEIKKAUSPALVELU</h1> 
+      <%- include ('../header')%><!--valikkopalkki-->
+    </header>
+<h2 id="nimi"><%=nimi%></h2><!--Kisan nimi muuttujasta nimi-->
+    <table  ><tr>                         
+            <th>NRO</th>             
+            <th>OTTELU</th>             
+            <th>TULOS</th></tr>
+            <tr><%data.forEach(ottelut =>{%><!--Ottelut ja tulokset muuttujasta data-->
+                <form action="/yllapito/paivitatulos" method='POST' >                   
                 <td ><%=ottelut.otteluID%></td>
-            <td ><b><%=ottelut.ottelu %></b> </td>
-           <td><input placeholder="<%=ottelut.tulos %>" name="tulos" value="" type="text" size="1">
-                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="paivitabtn">Päivitä</button></form></td>
-                
-                </tr>
-                <%})%>
+                <td ><b id="ottelu"><%=ottelut.ottelu %></b> </td>
+                <td><input placeholder="<%=ottelut.tulos %>" name="tulos" value="" type="text" size="1">
+                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="paivitabtn">Päivitä</button></form></td>                
+                </tr><%})%><!--Klikkaus lähettää tuloksen ja ottelu id:n -->
                 </table>
-</body>
-
-</html>
+</body></html>

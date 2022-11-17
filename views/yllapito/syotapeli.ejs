@@ -6,42 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEIKKAUSPALVELU</title>
     <style>
-        body{
-            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);      
-        }
-        #nimi{
-                text-transform: uppercase;            }
-
+        /*taustan liukuväri*/
+        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}
+        /*Kisan nimi isoiksi kirjaimiksi*/
+        #nimi{text-transform: uppercase;}
+        /*ottelun nimi isoiksi kirjaimiksi*/
+        #ottelu{text-transform: uppercase;} 
     </style>
     
 </head>
-<header><h1>VEIKKAUSPALVELU</h1>   <%- include ('../header')%></header>
+<header><h1>VEIKKAUSPALVELU</h1>
+    <!--valikkopalkki--><%- include ('../header')%></header>
 <body>
-    <h2 id="nimi"><%=nimi%></h2>
-   
-
-
+    <h2 id="nimi"><%=nimi%></h2><!--Kisan nimi muuttujasta nimi--> 
     <form action="/yllapito/lisaaottelu" method="POST">
         <h3>Syötä ottelu</h3>        
-        <input  id="input" type="text" placeholder="joukkue-joukkue" name="ottelu" required>  <button id="lisaa" >Lisää</button></form>
-
-    <table  >
-        <tr> 
+        <input  id="input" type="text" placeholder="joukkue-joukkue" name="ottelu"  required>  <button id="lisaa" value="<%=id%>" name="lisaabtn">Lisää</button></form>
+        <!--Klikkaus lähettää syötetyn ottelun ja kisaID:n ottelun lisäämiseksi tietokantaan-->
+    <table  ><tr> 
             <th>KisaID</th>            
-            <th>OTTELUID</th>
-             
-             <th>OTTELU</th>
-            </tr>
-             <tr>
-                <%data.forEach(ottelut =>{%>
-                    <form action="/poistapeli" method='POST' >
+            <th>OTTELUID</th>             
+             <th>OTTELU</th></tr>
+             <tr><%data.forEach(ottelut =>{%><!--ottelut muuttujasta data-->
+                    <form action="/yllapito/poistapeli" method='POST' >
                     <td><%=ottelut.kisaID%></td>
-                <td ><%=ottelut.otteluID%></td>
-                <td><%=ottelut.ottelu %> </td>
-                
-                <td><button onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="poistabtn">poista</button></form></td></tr>
-                <%})%>
-                </table>
+                    <td ><%=ottelut.otteluID%></td>
+                    <td id="ottelu"><%=ottelut.ottelu %> </td>
+                    <td><button  onclick="this.form.submit()" value="<%=ottelut.otteluID%>" name="poistabtn">Poista</button></form></td></tr>
+                    <!--klikkaus lähettää otteluID:n ottelun poistamiseksi tietokannasta -->
+                <%})%> </table>
 </body>
-
 </html>

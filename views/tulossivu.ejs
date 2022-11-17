@@ -4,50 +4,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lätkäveikkaus</title>
+    <title>VEIKKAUSPALVELU</title>
     <style>
         table, th, td {
-          border: 1px solid  black;
-          text-align: center;
-         text-transform: uppercase;
-        }
+          border: 1px solid  black; /*taulukon reunaviiva'*/
+          text-align: center; /*taulukon tekstin keskelle ruutua'*/
+         text-transform: uppercase;  /*taulukon tekstit isoiksi kirjaimiksi*/      }
         h2{
-            text-transform: uppercase;  
-        }
+            text-transform: uppercase;/*Kisan nimi isoiksi kirjaimiksi*/         }
         body{
+            /*taustan liukuväri*/
             background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}
-        </style>
-    
+        </style>    
 </head>
 <header><h1>LÄTKÄVEIKKAUS</h1>   <%- include ('./header')%></header>
-<body>
-    
-<h2><%=nimi%></h2>
-<table  >
-    <tr> 
-              
-                     
+<body>    
+<h2><%=nimi%></h2><!--kisan nimi muuttujasta nimi-->
+<table><tr>                    
          <th>OTTELU</th>
          <th>TULOS</th>
-         </tr>
-         <%data.forEach(ottelut =>{  %>
-         <tr>                          
+         <!-- ottelut ja tulokset muuttujasta data-->
+         </tr><%data.forEach(ottelut =>{  %><tr>                          
             <td><%=ottelut.ottelu %></td>
             <td><%=ottelut.tulos %></td>
             <%})%></table><br>
-            <table  >
-                <tr> 
-                          
-                                 
-                     <th>PELAAJA</th>
-                     <th>PISTEET</th>
-                     </tr>
-                     <%tulos.forEach(tulokset =>{  %>
-                     <tr>                          
-                        <td><%=tulokset.etunimi %> <%=tulokset.sukunimi  %></td>
-                        
-                        <td><%=tulokset.pisteet%></td>
-
-                        
+            <table><tr>                                  
+                <th>PELAAJA</th>
+                <th>PISTEET</th>
+                <!--Pelaajien nimet ja pisteet muuttujasta tulos-->
+                </tr><%tulos.forEach(tulokset =>{  %><tr>                          
+                <td><%=tulokset.etunimi %> <%=tulokset.sukunimi  %></td>                        
+                <td><%=tulokset.pisteet%></td>                        
                         <%})%></table>
-         </body></html> 
+</body></html> 

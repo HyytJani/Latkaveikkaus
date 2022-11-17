@@ -6,28 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEIKKAUSPALVELU</title>
     <style>
-        body{
-            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);
-           
-        }
-        #error{ color:red; text-transform: uppercase;
-            }
-        #nimi{
-                text-transform: uppercase; 
-            }
-
+        /*taustan liukuväri*/
+        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}
+        /*virhe ilmoitus ilmoituksen punainenväri ja isot kirjaimet*/
+        #error{ color:red; text-transform: uppercase;}
+        /*kisan nimi isoilla kirjaimilla*/
+        #nimi{text-transform: uppercase; }
     </style>
     
 </head>
-<header><h1>VEIKKAUSPALVELU</h1>   <%- include ('./header')%></header>
+<header><h1>VEIKKAUSPALVELU</h1>
+<!--hakee valikkopalkin painikkeet header.ejs tiedostosta-->
+<%- include ('./header')%></header>
+<!--Kisannimi muuttujasta nimi/nimi-->
 <h2 id="nimi"><%=nimi%></h2>
 <body>
+    <!--Näyttää tarvittaessa virheen, jos jotakin kenttää ei ole täytetty oikein, muuttujasta error/error-->
     <p id="error"><%=error%></p>
         <h3>LISÄÄ PELAAJAN TIEDOT</h3>
         <form action="/app/veikkaa" method='POST' >    
             <input  type="text" placeholder="Etunimi" name="etunimi" value="" required><br> 
-            <input  type="text" placeholder="Sukunimi"name="sukunimi" value=""required> <br>             
-         
+            <input  type="text" placeholder="Sukunimi"name="sukunimi" value=""required> <br>       
     <table  >
         <tr> 
             <th>KisaID</th>            
@@ -36,18 +35,17 @@
              <th>1</th>
              <th>X</th>
              <th>2</th></tr>
-             <%data.forEach(ottelut =>{              
-                i++
-                %>
-             <tr>
-                                   
+             <!--hakee veikattavat ottelut muuttujasta data/rows ja antaa jokaiselle ottelulle oman name arvon i-muuttujalla-->
+             <%data.forEach(ottelut =>{ i++  %>
+             <tr>                                   
                 <td><%=ottelut.kisaID%></td>
                 <td ><%=ottelut.otteluID%></td>
                 <td><%=ottelut.ottelu %></td>               
-             <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,1" required></td>
+                <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,1" required></td>
                 <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,X"></td>
                 <td><input type="radio"  name="valinta[<%=i%>]" value="<%=ottelut.kisaID%>,<%=ottelut.otteluID%>,2"></td>
                 </tr><%})%></table>
                 <button value="<%=i%>" name="tallennaBtn" >TALLENNA</button>
+                <!--Tallenna button lähettää veikkaajan etu ja sukunimen,sekä jokaisesta ottelusta kisaID:n,otteluID:n ja veikkauksen sekä otteluiden määrän button valuesta-->
               </form>                            
                 </body></html> 
