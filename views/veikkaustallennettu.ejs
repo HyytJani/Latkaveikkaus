@@ -18,10 +18,9 @@
    <%- include ('./header')%>
 </header>
 <body>
-    <h2>Veikkauksesi on tallennettu</h2> 
-    
+    <h2>Veikkauksesi on tallennettu</h2>     
     <h3 id="kisa" ><%=veikkaus[0].kisojen_nimi%></h3>
-<h4 id="pelaaja" ><%=veikkaus[0].etunimi%> <%=veikkaus[0].sukunimi%> </h4>
+     <h4 id="pelaaja" ><%=veikkaus[0].etunimi%> <%=veikkaus[0].sukunimi%> </h4>
    <table><tr><th>Ottelu</th>
     <th>Veikkaus</th></tr>
     <tr><%veikkaus.forEach(pelaaja =>{  %>   
