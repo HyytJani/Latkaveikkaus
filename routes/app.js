@@ -28,6 +28,7 @@ let error=""
     var sql="SELECT * FROM kisat WHERE veikkaus_paattyy >= localtime"
     yhteys.query(sql,(err,ress)=>{
         if(err)throw err;
+        
     //Haetaan kisat joita on veikattu                      
     var sql="SELECT DISTINCT veikkaus.kisaID,kisojen_nimi FROM veikkaus,kisat WHERE veikkaus.kisaID=kisat.kisaID";
     yhteys.query(sql,(err1,rows)=>{ 
@@ -102,21 +103,19 @@ let error=""
                     if(err)throw(err);           
                     tallennaVeikkaus(rows[0].pelaajaID)});  }
 
-         //tallentaa veikkauksen tietokantaan ja lähettää käyttäjälle sivun veikkaustallennettu     
-         function tallennaVeikkaus(id){
-        for(let a=0;a<rb.length;a++){
+    //tallentaa veikkauksen tietokantaan ja lähettää käyttäjälle sivun veikkaustallennettu     
+    function tallennaVeikkaus(id){          
+    for(let a=0;a<rb.length;a++){
         const veikkaus=rb[a].split(",")                              
         var sql="INSERT INTO veikkaus(kisaID,pelaajaID,otteluID,veikkaus)VALUES(?,?,?,?)";
-        yhteys.query(sql,[veikkaus[0],id,veikkaus[1],veikkaus[2]],(req,rows,error)=>{
-        if(error)throw error ; 
-        var sql2="Select veikkaus.veikkausID,kisojen_nimi,veikkaus,etunimi,sukunimi,ottelu FROM ottelut,veikkaus,kisat,pelaaja WHERE veikkaus.otteluID=ottelut.otteluID AND kisat.kisaID=ottelut.kisaID AND veikkaus.pelaajaID=pelaaja.pelaajaID AND veikkaus.pelaajaID=? AND veikkaus.kisaID=?";
+        yhteys.query(sql,[veikkaus[0],id,veikkaus[1],veikkaus[2]],(error)=>{
+        if(error)throw error ;
+        if(a==rb.length-1){         
+        var sql2="Select veikkaus.veikkausID,kisojen_nimi,veikkaus,etunimi,sukunimi,otteluFROM ottelut,veikkaus,kisat,pelaaja WHERE veikkaus.otteluID=ottelut.otteluID AND kisat.kisaID=ottelut.kisaID AND veikkaus.pelaajaID=pelaaja.pelaajaID AND veikkaus.pelaajaID=? AND veikkaus.kisaID=?";
         yhteys.query(sql2,[id,veikkaus[0]],(err,row)=>{
         if(err)throw err ; 
         res.render("veikkaustallennettu",{veikkaus:row})
-        })});} 
-        pelaaja=""  
-        i=-1;             
-        }});                    
+        })}});} }});                    
                      
     // näytä tulossivu       
     router.post('/tulossivu',(req,res)=>{
@@ -159,7 +158,8 @@ router.post('/veikkaukset',(req,res)=>{
         if(err)throw(err);  
         let nimi=row[0].kisojen_nimi;
         sql="SELECT DISTINCT pelaajaID FROM veikkaus WHERE kisaID='?'"
-        yhteys.query(sql,[kisa],(req,rows)=>{                    
+        yhteys.query(sql,[kisa],(err,rows)=>{
+            if(err)throw(err);                      
             for(let i=0;i<rows.length;i++){
             sql="SELECT etunimi,sukunimi FROM pelaaja WHERE pelaajaID='?'"
             yhteys.query(sql,[rows[i].pelaajaID],(req,row1)=>{               
@@ -178,7 +178,7 @@ router.post('/veikkaukset',(req,res)=>{
 router.get('/naytaveikkaus/:nimi/:pelaajaID',(req,res)=>{
    const nimi=req.params.nimi //kisannimi
    const id=req.params.pelaajaID//pelaajaID
-   //haetaan tarvittavat tiedot ja lähete''n sivu käyttäjälle
+   //haetaan tarvittavat tiedot ja lähetetään sivu käyttäjälle
     let sql="Select veikkaus.veikkausID,kisojen_nimi,veikkaus,etunimi,sukunimi,ottelu FROM ottelut,veikkaus,kisat,pelaaja WHERE veikkaus.otteluID=ottelut.otteluID AND kisat.kisaID=ottelut.kisaID AND veikkaus.pelaajaID=pelaaja.pelaajaID AND veikkaus.pelaajaID=? AND kisojen_nimi=?"
     yhteys.query(sql,[id,nimi],(err,row)=>{
         if(err)throw(err);

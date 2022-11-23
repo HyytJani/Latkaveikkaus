@@ -4,48 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table, th, td {
+    <style>/*taulukontyylit*/
+        th, td {
         border: 1px solid  black;
         text-align: center;
         text-transform: uppercase;
-        }
-        body{
-            background-image: linear-gradient(to right, rgb(179, 209, 245), blue);           
-        }
-      
-     
+        margin-left: 160px;}
+        table{
+            margin-left: 160px;
+            display: block;
+            overflow-x:auto;          }
+        th{ height: 35px; }   
+        th:nth-child(1){
+            position: absolute;
+            left: -155px;    
+            width: 160px;
+            height: 35px;
+            background: inherit; }
+        td:nth-child(1){
+            position: absolute;
+            left: -155px;
+            width: 160px;
+            height: 18px; 
+            background: inherit;}
+        /*taustan liukuväri*/  
+        body{background-image: linear-gradient(to right, rgb(179, 209, 245), blue);}
+        /*kisan nimi isoilla kirjaimilla*/
+        #nimi{text-transform: uppercase;}     
     </style>
 </head>
 <header><h1>VEIKKAUSPALVELU</h1>
-   <%- include ('./header')%>
-
+   <%- include ('./header')%><!--valikkopalkki-->
 </header>
 <body>
-    <h2><%=nimi%></h2>
-         <table  >
-    <tr> 
+    <h2 id="nimi"><%=nimi%></h2><!--kisannimi-->
+    <table><tr> 
         <th>PELAAJA</th>
         <%data.forEach(otsikko =>{  %>                 
-         <th id="ottelu" ><%=otsikko.ottelu%></th> <%})%></tr> 
-         <tr>
-       
-         <%data1.forEach(pelaaja =>{  %>   
-            <td><a href="/app/naytaveikkaus/<%=nimi%>/<%=pelaaja.pelaajaID%>"><%=pelaaja.nimi%></a></td>                     
-            <%for(let i=0;i < pelaaja.veikkaus.length;i++){%>
-            <td><%=pelaaja.veikkaus[i]%></td><%}%> 
-         
-            
-
-
-            
-            
-            </tr> <%})%> 
+      <th id="ottelu" ><%=otsikko.ottelu%></th> <%})%> </tr > 
+         <tr > <%data1.forEach(pelaaja =>{  %> 
+            <td><a href="/app/naytaveikkaus/<%=nimi%>/<%=pelaaja.pelaajaID%>" ><%=pelaaja.nimi%></a></td>                     
+            <%for(let i=0;i < pelaaja.veikkaus.length;i++){%><!-- purkaa veikkaukset muuttujasta-->
+            <td ><%=pelaaja.veikkaus[i]%></td><%}%>   
+            </tr> <%})%>
             <table  >
-              
-                          
-                                 
-
-    
-</body>
-</html>
+</body></html>

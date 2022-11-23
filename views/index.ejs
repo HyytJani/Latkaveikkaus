@@ -18,7 +18,7 @@
     <h4>Voit veikata seuraavissa kisoissa</h4>
     <%data1.forEach(peli =>{%><form action="/app/veikkaus" method='POST' ><!--data1 veikattavat pelit. klikkaus siirtää veikkaus sivulle-->
         <button onclick="this.form.submit()" value="<%=peli.kisaID%>" name="siirrybtn1"> <%= peli.kisojen_nimi %></button>
-        <p>Päättyy <%= peli.veikkaus_paattyy %></p></form>
+        <p>Päättyy <%= peli.veikkaus_paattyy.toUTCString() %></p></form>
         <%})%>
     <h4>Tarkastele tuloksia</h4>
     <%data.forEach(kisa =>{%><form action="/app/tulossivu" method='POST' ><!--data veikatutpelit. klikkaus siirtää tulos sivulle-->
